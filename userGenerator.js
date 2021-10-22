@@ -18,19 +18,19 @@ for (let i = 1; i < 21; i++) {
   const age = Math.floor(Math.random() * 70);
   let name = '';
   let id = `person${i}`;
-  let phone = '';
-  let person = { id, gender, name, surname, age, phone };
+  let email = '';
+  let person = { id, gender, name, surname, age, email };
 
   switch (gender) {
     case 'F':
       name = getRand(femaleNames);
       person.name = name;
-      person.phone = (`${name}.${surname}${i}@gmail.com`.toLowerCase());
+      person.email = (`${name}.${surname}${i}@gmail.com`.toLowerCase());
       break;
       case 'M':
         name = getRand(maleNames);
         person.name = name;
-        person.phone = (`${name}.${surname}${i}@gmail.com`.toLowerCase());
+        person.email = (`${name}.${surname}${i}@gmail.com`.toLowerCase());
       break;
   }
   people.push(JSON.stringify(person));
