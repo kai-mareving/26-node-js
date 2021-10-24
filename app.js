@@ -4,6 +4,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 
 const addTextWatermarkToImage = async function(inputFile, outputFile, text) {
+  startApp();
   const image = await Jimp.read(inputFile);
   //# FONT STYLES
   // const font = await Jimp.loadFont(Jimp.FONT_SANS_32_WHITE);
@@ -16,11 +17,13 @@ const addTextWatermarkToImage = async function(inputFile, outputFile, text) {
 
   image.print(font, 0, 0, textData, image.getWidth(), image.getHeight());
   await image.quality(100).writeAsync(outputFile);
+  console.log('Text watermark added to image!');
 };
 
 
 //* ADD IMAGE WATERMARK */
 const addImageWatermarkToImage = async function(inputFile, watermarkFile, outputFile) {
+  startApp();
   const image = await Jimp.read(inputFile);
   const watermark = await Jimp.read(watermarkFile);
   const x = image.getWidth() / 2 - watermark.getWidth() / 2;
@@ -31,6 +34,7 @@ const addImageWatermarkToImage = async function(inputFile, watermarkFile, output
     opacitySource: 0.5,
   });
   await image.quality(100).writeAsync(outputFile);
+  console.log('Image watermark added to image!');
 };
 
 prepareOutputFilename = (inputFile) => {
@@ -44,7 +48,7 @@ const startApp = async () => {
     {
       name: 'start',
       message:
-        'Welcome to "Watermark generator". Copy your image files to `/img` folder to use them in the app. Are you ready?',
+        'Welcome to "Watermark generator". Copy your image files to `/img` folder to use them in the app. ARE YOU READY?',
       type: 'confirm',
     },
   ]);
@@ -68,9 +72,9 @@ const startApp = async () => {
   ]);
 
   try {
-    throw (fs.existsSync(`./img/${options.inputFile}`));
+    throw (fs.existsSync(`${options.inputFile}`));
   } catch (err) {
-    console.log('Oops, something went wrong! Please try again');
+    console.log(`Oops, ${options.inputFile} doesn't exist! Please try again`);
   }
 
   if (options.watermarkType === 'Text watermark') {
@@ -89,8 +93,6 @@ const startApp = async () => {
         prepareOutputFilename(options.inputFile),
         options.watermarkText
       );
-      console.log('Text watermark added to image!');
-      startApp();
     }
   }
   else {
@@ -107,7 +109,7 @@ const startApp = async () => {
     try {
       throw (fs.existsSync(`./img/${options.watermarkImage}`));
     } catch (err) {
-      console.log('Oops, something went wrong! Please try again 2');
+      console.log(`Oops, ${options.watermarkImage} doesn't exist! Please try again`);
     }
     if (fs.existsSync(`./img/${options.watermarkImage}`)) {
       addImageWatermarkToImage(
@@ -115,8 +117,6 @@ const startApp = async () => {
         './img/' + options.watermarkImage, /* watermarkFile */
         prepareOutputFilename(options.inputFile) /* outputFile */
       );
-      console.log('Image watermark added to image!');
-      startApp();
     }
   }
 };
