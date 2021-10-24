@@ -72,7 +72,7 @@ const startApp = async () => {
   ]);
 
   try {
-    throw (fs.existsSync(`${options.inputFile}`));
+    throw (fs.existsSync(`./img/${options.inputFile}`));
   } catch (err) {
     console.log(`Oops, ${options.inputFile} doesn't exist! Please try again`);
   }
