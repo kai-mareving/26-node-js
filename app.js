@@ -1,14 +1,13 @@
 //* IMAGE WATERMARKING with Jimp (load with cmd: node app.js ) */
 const Jimp = require('jimp');
 const inquirer = require('inquirer');
+const fs = require('fs');
 
 const addTextWatermarkToImage = async function(inputFile, outputFile, text) {
   const image = await Jimp.read(inputFile);
-
   //# FONT STYLES
-  const font = await Jimp.loadFont(Jimp.FONT_SANS_32_WHITE);
-  // const font = await Jimp.loadFont(Jimp.FONT_SANS_14_BLACK);
-
+  // const font = await Jimp.loadFont(Jimp.FONT_SANS_32_WHITE);
+  const font = await Jimp.loadFont(Jimp.FONT_SANS_16_BLACK);
   const textData = {
     text,
     alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
@@ -29,7 +28,7 @@ const addImageWatermarkToImage = async function(inputFile, watermarkFile, output
 
   image.composite(watermark, x, y, {
     mode: Jimp.BLEND_SOURCE_OVER,
-    opacitySource: 0.4,
+    opacitySource: 0.5,
   });
   await image.quality(100).writeAsync(outputFile);
 };
@@ -68,6 +67,12 @@ const startApp = async () => {
     },
   ]);
 
+  try {
+    throw (fs.existsSync(`./img/${options.inputFile}`));
+  } catch (err) {
+    console.log('Oops, something went wrong! Please try again');
+  }
+
   if (options.watermarkType === 'Text watermark') {
     const text = await inquirer.prompt([
       {
@@ -77,23 +82,42 @@ const startApp = async () => {
       },
     ]);
     options.watermarkText = text.value;
-    addTextWatermarkToImage(
-      './img/' + options.inputFile, prepareOutputFilename(options.inputFile), options.watermarkText);
-  } else {
+
+    if (fs.existsSync(`./img/${options.inputFile}`)) {
+      addTextWatermarkToImage(
+        './img/' + options.inputFile,
+        prepareOutputFilename(options.inputFile),
+        options.watermarkText
+      );
+      console.log('Text watermark added to image!');
+      startApp();
+    }
+  }
+  else {
     const image = await inquirer.prompt([
       {
         name: 'filename',
         type: 'input',
-        message: 'Type your watermark name:',
-        default: 'logo.png',
+        message: 'Type your watermark file name:',
+        default: 'logo.jpg',
       },
     ]);
     options.watermarkImage = image.filename;
-    addImageWatermarkToImage(
-      './img/' + options.inputFile, /* inputFile */
-      './img/' + options.watermarkImage, /* watermarkFile */
-      prepareOutputFilename(options.inputFile) /* outputFile */
-    );
+
+    try {
+      throw (fs.existsSync(`./img/${options.watermarkImage}`));
+    } catch (err) {
+      console.log('Oops, something went wrong! Please try again 2');
+    }
+    if (fs.existsSync(`./img/${options.watermarkImage}`)) {
+      addImageWatermarkToImage(
+        './img/' + options.inputFile, /* inputFile */
+        './img/' + options.watermarkImage, /* watermarkFile */
+        prepareOutputFilename(options.inputFile) /* outputFile */
+      );
+      console.log('Image watermark added to image!');
+      startApp();
+    }
   }
 };
 
