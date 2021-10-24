@@ -1,0 +1,20 @@
+{
+  "name": "26-node-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "init-project": "npm install && npm init:gitignore",
+    "init:gitignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o .gitignore",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kai-mareving/26-node-js.git"
+  },
+  "author": "Joanna Kai",
+  "license": "ISC",
+  "dependencies": {
+    "jimp": "^0.6.4"
+  }
+}
