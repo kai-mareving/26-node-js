@@ -10,16 +10,23 @@ const getRand = (arr) => {
   return rand;
 };
 
+const getRandInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
 const people = [];
 
 for (let i = 1; i < 21; i++) {
   const gender = getRand(genders);
   const surname = getRand(lastNames);
-  const age = Math.floor(Math.random() * 70);
+  const age = getRandInt(18, 70);
+  const phone = getRandInt(700000000, 999999999);
   let name = '';
   let id = `person${i}`;
   let email = '';
-  let person = { id, gender, name, surname, age, email };
+  let person = { id, gender, name, surname, age, phone, email };
 
   switch (gender) {
     case 'F':
