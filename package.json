@@ -1,20 +1,35 @@
 {
   "name": "26-node-js",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple image watermarking with Jimp and userGenerator with FS",
   "main": "app.js",
   "scripts": {
     "init-project": "npm install && npm init:gitignore",
     "init:gitignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o .gitignore",
-    "test": "test"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kai-mareving/26-node-js.git"
   },
+  "keywords": [
+    "radid",
+    "id",
+    "generator",
+    "random",
+    "app",
+    "smallapp",
+    "randid-generator",
+    "user",
+    "watermark",
+    "image",
+    "jimp",
+    "fs"
+  ],
   "author": "Joanna Kai",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "@kai-mareving/randid-generator": "^1.0.1",
     "inquirer": "^6.5.0",
     "jimp": "^0.6.4"
   }
